@@ -5,10 +5,7 @@ class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         FileReader fileReader = new FileReader();
-        ArrayList<MonthlyReport> monthlyReports= new ArrayList<>(3);
-        for (int i = 0; i < 3; i++){
-            monthlyReports.add(null);
-        }
+        ArrayList<MonthlyReport> monthlyReports= new ArrayList<>();
         YearlyReport yearlyReport = null;
 
         while (true){
@@ -23,7 +20,7 @@ class Main {
                         ArrayList<String> lines = fileReader.readFileContents("m.20210" + i + ".csv");
                         lines.remove(0);
                         MonthlyReport monthlyReport = new MonthlyReport(lines, "0" + i);
-                        monthlyReports.set(i - 1, monthlyReport);
+                        monthlyReports.add(monthlyReport);
                     }
                     System.out.println("Имеющиеся месячные отчеты были считаны");
                     break;
@@ -35,7 +32,7 @@ class Main {
                     break;
                 case 3:
                     if (yearlyReport == null){
-                        System.out.println("Годовой отчет не был считан. Счмтайте сначала годовой отчет");
+                        System.out.println("Годовой отчет не был считан. Считайте сначала годовой отчет");
                     } else {
                         yearlyReport.checkReports(monthlyReports);
                     }
@@ -45,7 +42,7 @@ class Main {
                     while (true){
                         int monthNumber = scanner.nextInt();
                         if (monthNumber > 0 && monthNumber < 4){
-                            if(monthlyReports.get(monthNumber - 1) == null){
+                            if(monthlyReports.isEmpty()){
                                 System.out.println("Отчет за " + ConverterNumMonthToMonth.getNameMonth("0" + monthNumber)
                                         + " не был считан. Считайте сначала месячные отчеты");
                             } else {
@@ -58,11 +55,11 @@ class Main {
                     }
                     break;
                 case 5:
-                    for (MonthlyReport monthlyReport: monthlyReports){
-                        if (monthlyReport == null){
-                            System.out.println("Месячные отчеты не были считаны. Считайте сначала месячные отчеты");
-                            break;
-                        } else {
+                    if (monthlyReports.isEmpty()){
+                        System.out.println("Месячные отчеты не были считаны. Считайте сначала месячные отчеты");
+                        break;
+                    } else {
+                        for (MonthlyReport monthlyReport : monthlyReports) {
                             monthlyReport.getMonthInfo();
                         }
                     }

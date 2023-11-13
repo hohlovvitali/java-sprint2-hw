@@ -2,8 +2,8 @@ import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 import java.util.HashMap;
 public class YearlyReport {
-    HashMap<String, Integer> incomePerMonth;
-    HashMap<String, Integer> expensePerMonth;
+    private HashMap<String, Integer> incomePerMonth;
+    private HashMap<String, Integer> expensePerMonth;
 
     YearlyReport(ArrayList<String> lines){
         incomePerMonth = new HashMap<>();
@@ -53,26 +53,25 @@ public class YearlyReport {
     }
 
     boolean checkIncome(MonthlyReport month){
-        return month.getSumMonthIncome() == incomePerMonth.get(month.monthNumber);
+        return month.getSumMonthIncome() == incomePerMonth.get(month.getMonthNumber());
     }
 
     boolean checkExpense(MonthlyReport month){
-        return month.getSumMonthExpense() == expensePerMonth.get(month.monthNumber);
+        return month.getSumMonthExpense() == expensePerMonth.get(month.getMonthNumber());
     }
 
     void checkReports(ArrayList<MonthlyReport> monthlyReports){
         boolean flag = true;
-        for(int i = 0; i < monthlyReports.size(); i++){
-            if (monthlyReports.get(i) == null){
-                System.out.println("Отчет за " + ConverterNumMonthToMonth.getNameMonth("0" + (i+1))
-                        + " не был считан. Сначала считайте отчеты.");
-                return;
-            } else {
-                if (!checkExpense(monthlyReports.get(i)) || !checkIncome(monthlyReports.get(i))) {
-                    System.out.println("В отчете за " + ConverterNumMonthToMonth.getNameMonth(monthlyReports.get(i).monthNumber) +
-                            " обнаружены несоответствия.");
-                    flag = false;
-                }
+        if (monthlyReports.isEmpty()){
+            System.out.println("Месячные отчеты не были считаны. Сначала считайте отчеты.");
+            return;
+        }
+
+        for (MonthlyReport monthlyReport : monthlyReports) {
+            if (!checkExpense(monthlyReport) || !checkIncome(monthlyReport)) {
+                System.out.println("В отчете за " + ConverterNumMonthToMonth.getNameMonth(monthlyReport.getMonthNumber()) +
+                        " обнаружены несоответствия.");
+                flag = false;
             }
         }
         if (flag){

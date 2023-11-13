@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 public class MonthlyReport {
 
-    String monthNumber;
-    ArrayList<Transaction> monthlyIncomeTransaction;
-    ArrayList<Transaction> monthlyExpenseTransaction;
+    private String monthNumber;
+    private ArrayList<Transaction> monthlyIncomeTransaction;
+    private ArrayList<Transaction> monthlyExpenseTransaction;
 
     MonthlyReport(ArrayList<String> lines, String month) {
         monthlyIncomeTransaction = new ArrayList<>();
@@ -21,13 +21,17 @@ public class MonthlyReport {
         }
     }
 
+    String getMonthNumber(){
+        return monthNumber;
+    }
+
     void getBestMonthlyTransaction(){
         int sumBestIncome = 0;
         String nameBestIncome = "";
         for (Transaction transaction: monthlyIncomeTransaction){
             if (sumBestIncome < transaction.getSumTransaction()){
                 sumBestIncome = transaction.getSumTransaction();
-                nameBestIncome = transaction.nameItem;
+                nameBestIncome = transaction.getNameItem();
             }
         }
 
@@ -40,7 +44,7 @@ public class MonthlyReport {
         for (Transaction expense: monthlyExpenseTransaction){
             if (sumBiggestExpense < expense.getSumTransaction()){
                 sumBiggestExpense = expense.getSumTransaction();
-                nameBiggestExpense = expense.nameItem;
+                nameBiggestExpense = expense.getNameItem();
             }
         }
 
